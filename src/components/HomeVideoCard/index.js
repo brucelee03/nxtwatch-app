@@ -1,9 +1,20 @@
-import {Link} from 'react-router-dom'
-
 import {formatDistanceToNow} from 'date-fns'
 import {BsDot} from 'react-icons/bs'
 
 import VideosContext from '../../context/VideosContext'
+
+import {
+  LinkItem,
+  HomeCardListItem,
+  HomeCardThumbnailImg,
+  HomeCardVideoContent,
+  HomeCardChannelImg,
+  HomeCardVideoAbout,
+  HomeCardTitle,
+  HomeCardChannelName,
+  VideoViewAndPublishedTime,
+  HomeCardVideoViewAndPublishedTime,
+} from '../styledComponents'
 
 const HomeVideoCard = props => (
   <VideosContext.Consumer>
@@ -25,27 +36,31 @@ const HomeVideoCard = props => (
       const dateAndTimeOfVideo = formatDistanceToNow(new Date(newDate))
 
       return (
-        <li className="video-item">
-          <Link to={`/videos/${id}`} className="link-item">
-            <img
+        <HomeCardListItem>
+          <LinkItem to={`/videos/${id}`} className="link-item">
+            <HomeCardThumbnailImg
               src={thumbnailUrl}
               alt="video thumbnail"
               className="thumbnail"
             />
-            <div className="video-content">
-              <img src={profileImageUrl} alt="channel logo" />
-              <div>
-                <h2>{title}</h2>
-                <p>{name}</p>
-                <div>
-                  <p>{viewCount} views</p>
-                  <BsDot />
-                  <p>{dateAndTimeOfVideo}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </li>
+            <HomeCardVideoContent>
+              <HomeCardChannelImg src={profileImageUrl} alt="channel logo" />
+              <HomeCardVideoAbout>
+                <HomeCardTitle color={darkTheme}>{title}</HomeCardTitle>
+                <HomeCardChannelName>{name}</HomeCardChannelName>
+                <HomeCardVideoViewAndPublishedTime>
+                  <VideoViewAndPublishedTime>
+                    {viewCount} views
+                  </VideoViewAndPublishedTime>
+                  <BsDot style={{color: '#475569', marginTop: '3px'}} />
+                  <VideoViewAndPublishedTime>
+                    {dateAndTimeOfVideo}
+                  </VideoViewAndPublishedTime>
+                </HomeCardVideoViewAndPublishedTime>
+              </HomeCardVideoAbout>
+            </HomeCardVideoContent>
+          </LinkItem>
+        </HomeCardListItem>
       )
     }}
   </VideosContext.Consumer>

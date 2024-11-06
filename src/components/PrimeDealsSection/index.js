@@ -2,6 +2,14 @@ import {Component} from 'react'
 
 import {RiCloseLine} from 'react-icons/ri'
 
+import {
+  BannerContainer,
+  BannerWebsiteLogo,
+  BuyPremiumBtn,
+  BannerCloseBtn,
+  BannerTagline,
+} from '../styledComponents'
+
 class PrimeDealsSection extends Component {
   state = {showPrimeDealsSection: true}
 
@@ -10,24 +18,25 @@ class PrimeDealsSection extends Component {
   }
 
   renderPrimeDealsSection = () => (
-    <div data-testid="banner">
+    <BannerContainer data-testid="banner">
       <div>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
+        <BannerWebsiteLogo
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
           alt="nxt watch logo"
         />
-        <p>Buy Nxt Watch Premium prepaid plans with UPI</p>
-        <button type="button">GET IT NOW</button>
+        <BannerTagline>
+          Buy Nxt Watch Premium prepaid plans with UPI
+        </BannerTagline>
+        <BuyPremiumBtn type="button">GET IT NOW</BuyPremiumBtn>
       </div>
-      <button
+      <BannerCloseBtn
         type="button"
-        className="close-button"
         data-testid="close"
         onClick={this.onClickClosePrimeDealsSection}
       >
-        <RiCloseLine style={{color: '#223a5f', fontSize: '13px'}} />
-      </button>
-    </div>
+        <RiCloseLine style={{color: '#212121', fontSize: '14px'}} />
+      </BannerCloseBtn>
+    </BannerContainer>
   )
 
   render() {

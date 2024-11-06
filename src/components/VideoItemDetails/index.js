@@ -17,8 +17,24 @@ import VideosContext from '../../context/VideosContext'
 
 import {
   VideoItemDetailsSection,
+  VideoItemDetailsLoaderContainer,
+  VideoItemDetailsHeading,
+  VideoElementCard,
+  VideoItemDetailsViewAndDateTime,
+  VideoItemViewAndPublishedTime,
+  HorizontalLine,
+  VideoItemContent,
+  VideoItemImg,
   VideoItemDetailsButton,
-  VideoItemDetailsBtnText,
+  VideoItemDetailsButtonCard,
+  VideoItemName,
+  VideoItemSubscriberCount,
+  VideoItemDescription,
+  FailureViewContainer,
+  FailureViewImg,
+  FailureViewHeading,
+  FailureViewDescription,
+  RetryBtn,
 } from '../styledComponents'
 
 const apiStatusConstants = {
@@ -34,7 +50,6 @@ class VideoItemDetails extends Component {
     apiStatus: apiStatusConstants.initial,
     isLiked: false,
     isDisliked: false,
-    isSaved: false,
   }
 
   componentDidMount() {
@@ -100,9 +115,19 @@ class VideoItemDetails extends Component {
   }
 
   renderLoadingView = () => (
-    <div data-testid="loader" className="job-details-loader-container">
-      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
-    </div>
+    <VideosContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+        return (
+          <VideoItemDetailsLoaderContainer
+            bgColor={darkTheme}
+            data-testid="loader"
+          >
+            <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+          </VideoItemDetailsLoaderContainer>
+        )
+      }}
+    </VideosContext.Consumer>
   )
 
   renderFailureView = () => (
@@ -110,27 +135,27 @@ class VideoItemDetails extends Component {
       {value => {
         const {darkTheme} = value
         return (
-          <div className="video-item-error-view-container">
-            <img
-              src={
-                darkTheme
-                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
-                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
-              }
-              alt="failure view"
-              className="videos-failure-img"
-            />
-            <h1 className="video-failure-heading-text">
-              Oops! Something Went Wrong
-            </h1>
-            <p className="videos-failure-description">
-              We are having some trouble to complete your request. Please try
-              again.
-            </p>
-            <button type="button" onClick={this.onClickRetryButton}>
-              Retry
-            </button>
-          </div>
+          <>
+            <FailureViewContainer bgColor={darkTheme}>
+              <FailureViewImg
+                src={
+                  darkTheme
+                    ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                    : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+                }
+                alt="failure view"
+              />
+              <FailureViewHeading color={darkTheme}>
+                Oops! Something Went Wrong
+              </FailureViewHeading>
+              <FailureViewDescription>
+                We are having some trouble to complete your request.
+              </FailureViewDescription>
+              <RetryBtn type="button" onClick={this.onClickRetryButton}>
+                Retry
+              </RetryBtn>
+            </FailureViewContainer>
+          </>
         )
       }}
     </VideosContext.Consumer>
@@ -145,7 +170,7 @@ class VideoItemDetails extends Component {
           removeSavedVideos,
           savedVideosList,
         } = value
-        const {videoData, isLiked, isDisliked, isSaved} = this.state
+        const {videoData, isLiked, isDisliked} = this.state
         const {
           id,
           title,
@@ -157,13 +182,12 @@ class VideoItemDetails extends Component {
         } = videoData
 
         const isVideoSaved = savedVideosList.some(video => video.id === id) // Iterate savedVideosList to check whether video is in the list
+
         const handleSaveButtonClick = () => {
           if (isVideoSaved) {
             removeSavedVideos(id)
-            this.setState({isSaved: false})
           } else {
             addSavedVideoItem(videoData)
-            this.setState({isSaved: true})
           }
         }
 
@@ -182,49 +206,77 @@ class VideoItemDetails extends Component {
                 controls
                 className="video-player"
                 width="100%"
+                height="446px"
               />
             </div>
-            <h2>{title}</h2>
-            <div className="video-element-card">
-              <div>
-                <p>{viewCount} views</p>
-                <BsDot />
-                <p>{dateAndTimeOfVideo}</p>
-              </div>
-              <div>
+            <VideoItemDetailsHeading color={darkTheme}>
+              {title}
+            </VideoItemDetailsHeading>
+            <VideoElementCard>
+              <VideoItemDetailsViewAndDateTime>
+                <VideoItemViewAndPublishedTime>
+                  {viewCount} views
+                </VideoItemViewAndPublishedTime>
+                <BsDot style={{color: '#94a3b8', marginTop: '3px'}} />
+                <VideoItemViewAndPublishedTime>
+                  {dateAndTimeOfVideo}
+                </VideoItemViewAndPublishedTime>
+              </VideoItemDetailsViewAndDateTime>
+              <VideoItemDetailsButtonCard>
                 <VideoItemDetailsButton
                   type="button"
-                  className={isLiked ? 'active' : ''}
+                  onClick={this.handleLikeButtonClick}
+                  color={isLiked}
                 >
-                  <BiLike style={{fontSize: '19px'}} />
-                  <VideoItemDetailsBtnText>Like</VideoItemDetailsBtnText>
+                  <BiLike
+                    style={{
+                      fontSize: '17px',
+                      color: isLiked ? '#3b82f6' : '#94a3b8',
+                    }}
+                  />
+                  Like
                 </VideoItemDetailsButton>
                 <VideoItemDetailsButton
                   type="button"
-                  className={isDisliked ? 'active' : ''}
+                  onClick={this.handleDislikeButtonClick}
+                  color={isDisliked}
                 >
-                  <BiDislike style={{fontSize: '19px'}} />
-                  <VideoItemDetailsBtnText>Dislike</VideoItemDetailsBtnText>
+                  <BiDislike
+                    style={{
+                      fontSize: '19px',
+                      color: isDisliked ? '#3b82f6' : '#94a3b8',
+                    }}
+                  />
+                  Dislike
                 </VideoItemDetailsButton>
                 <VideoItemDetailsButton
                   type="button"
                   onClick={handleSaveButtonClick}
-                  className={isSaved ? 'active' : ''}
+                  color={isVideoSaved}
                 >
-                  <MdOutlinePlaylistAdd style={{fontSize: '19px'}} />
-                  <VideoItemDetailsBtnText>Save</VideoItemDetailsBtnText>
+                  <MdOutlinePlaylistAdd
+                    style={{
+                      fontSize: '19px',
+                      color: isVideoSaved ? '#3b82f6' : '#94a3b8',
+                    }}
+                  />
+                  {isVideoSaved ? 'Saved' : 'Save'}
                 </VideoItemDetailsButton>
-              </div>
-            </div>
-            <hr />
-            <div className="video-item-content">
-              <img src={channel.profileImageUrl} alt={channel.name} />
+              </VideoItemDetailsButtonCard>
+            </VideoElementCard>
+            <HorizontalLine borderColor={darkTheme} />
+            <VideoItemContent>
+              <VideoItemImg src={channel.profileImageUrl} alt="channel logo" />
               <div>
-                <h2>{channel.name}</h2>
-                <p>{channel.subscriberCount} subscribers</p>
-                <p>{description}</p>
+                <VideoItemName color={darkTheme}>{channel.name}</VideoItemName>
+                <VideoItemSubscriberCount>
+                  {channel.subscriberCount} subscribers
+                </VideoItemSubscriberCount>
+                <VideoItemDescription color={darkTheme}>
+                  {description}
+                </VideoItemDescription>
               </div>
-            </div>
+            </VideoItemContent>
           </VideoItemDetailsSection>
         )
       }}

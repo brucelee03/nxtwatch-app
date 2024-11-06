@@ -1,5 +1,12 @@
-import {Link} from 'react-router-dom'
 import VideosContext from '../../context/VideosContext'
+
+import {
+  GamingLinkItem,
+  VideoItem,
+  GamingVideoItemImg,
+  GamingVideoTitle,
+  GamingVideoViewCount,
+} from '../styledComponents'
 
 const GamingVideoCard = props => (
   <VideosContext.Consumer>
@@ -9,19 +16,21 @@ const GamingVideoCard = props => (
       const {id, title, thumbnailUrl, viewCount} = videoDetails
 
       return (
-        <li className="video-item">
-          <Link to={`/videos/${id}`} className="link-item">
-            <img
+        <VideoItem>
+          <GamingLinkItem to={`/videos/${id}`} className="link-item">
+            <GamingVideoItemImg
               src={thumbnailUrl}
               alt="video thumbnail"
               className="thumbnail"
             />
             <div className="video-content">
-              <h2>{title}</h2>
-              <p>{viewCount} Watching Worldwide</p>
+              <GamingVideoTitle color={darkTheme}>{title}</GamingVideoTitle>
+              <GamingVideoViewCount color={darkTheme}>
+                {viewCount} Watching Worldwide
+              </GamingVideoViewCount>
             </div>
-          </Link>
-        </li>
+          </GamingLinkItem>
+        </VideoItem>
       )
     }}
   </VideosContext.Consumer>

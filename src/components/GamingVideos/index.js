@@ -9,7 +9,19 @@ import Header from '../Header'
 import MenuItem from '../MenuItem'
 import VideosContext from '../../context/VideosContext'
 
-import {GamingVideoSection} from '../styledComponents'
+import {
+  GamingVideoSection,
+  Banner,
+  BannerLogoCard,
+  BannerHeading,
+  GamingVideosList,
+  GamingVideosLoaderContainer,
+  FailureViewContainer,
+  FailureViewImg,
+  FailureViewHeading,
+  FailureViewDescription,
+  RetryBtn,
+} from '../styledComponents'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -69,27 +81,27 @@ class GamingVideos extends Component {
       {value => {
         const {darkTheme} = value
         return (
-          <div className="videos-error-view-container">
-            <img
-              src={
-                darkTheme
-                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
-                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
-              }
-              alt="failure view"
-              className="videos-failure-img"
-            />
-            <h1 className="video-failure-heading-text">
-              Oops! Something Went Wrong
-            </h1>
-            <p className="videos-failure-description">
-              We are having some trouble to complete your request. Please try
-              again.
-            </p>
-            <button type="button" onClick={this.onClickRetryButton}>
-              Retry
-            </button>
-          </div>
+          <>
+            <FailureViewContainer bgColor={darkTheme}>
+              <FailureViewImg
+                src={
+                  darkTheme
+                    ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                    : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+                }
+                alt="failure view"
+              />
+              <FailureViewHeading color={darkTheme}>
+                Oops! Something Went Wrong
+              </FailureViewHeading>
+              <FailureViewDescription>
+                We are having some trouble to complete your request.
+              </FailureViewDescription>
+              <RetryBtn type="button" onClick={this.onClickRetryButton}>
+                Retry
+              </RetryBtn>
+            </FailureViewContainer>
+          </>
         )
       }}
     </VideosContext.Consumer>
@@ -100,9 +112,9 @@ class GamingVideos extends Component {
       {value => {
         const {darkTheme} = value
         return (
-          <div className="products-loader-container" data-testid="loader">
+          <GamingVideosLoaderContainer bgColor={darkTheme} data-testid="loader">
             <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
-          </div>
+          </GamingVideosLoaderContainer>
         )
       }}
     </VideosContext.Consumer>
@@ -115,18 +127,18 @@ class GamingVideos extends Component {
         const {gamingVideosList} = this.state
 
         return (
-          <GamingVideoSection data-testid="gaming" bgColor={darkTheme}>
-            <div className="gamingVideosHeader">
-              <div className="gamingVideosHeadingCard">
-                <SiYoutubegaming />
-              </div>
-              <h2>Trending</h2>
-            </div>
-            <ul className="gaming-videos-list">
+          <GamingVideoSection bgColor={darkTheme}>
+            <Banner bgColor={darkTheme} data-testid="banner">
+              <BannerLogoCard bgColor={darkTheme}>
+                <SiYoutubegaming style={{color: '#ff0b37', fontSize: '30px'}} />
+              </BannerLogoCard>
+              <BannerHeading color={darkTheme}>Trending</BannerHeading>
+            </Banner>
+            <GamingVideosList className="gaming-videos-list">
               {gamingVideosList.map(eachVideo => (
                 <GamingVideoCard videoDetails={eachVideo} key={eachVideo.id} />
               ))}
-            </ul>
+            </GamingVideosList>
           </GamingVideoSection>
         )
       }}
@@ -154,7 +166,7 @@ class GamingVideos extends Component {
         <Header />
         <div>
           <MenuItem />
-          {this.renderAllGamingVideos()}
+          <div data-testid="gaming">{this.renderAllGamingVideos()}</div>
         </div>
       </div>
     )

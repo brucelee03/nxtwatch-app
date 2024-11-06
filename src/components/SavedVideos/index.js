@@ -5,7 +5,17 @@ import Header from '../Header'
 import MenuItem from '../MenuItem'
 import VideosContext from '../../context/VideosContext'
 
-import {SavedVideosSection} from '../styledComponents'
+import {
+  SavedVideosSection,
+  Banner,
+  BannerLogoCard,
+  BannerHeading,
+  SavedVideosList,
+  NoSavedVideosSection,
+  NoSavedVideosImg,
+  NoSavedVideosHeading,
+  NoSavedVideosTxt,
+} from '../styledComponents'
 
 const SavedVideos = () => (
   <VideosContext.Consumer>
@@ -19,32 +29,36 @@ const SavedVideos = () => (
             <MenuItem />
             {savedVideosList.length > 0 ? (
               <div>
-                <div className="savedVideosHeader">
-                  <div className="savedVideosLogoCard">
-                    <HiFire />
-                  </div>
-                  <h2>Saved Videos</h2>
-                </div>
-                <ul className="savedVideoslist">
+                <Banner bgColor={darkTheme} data-testid="banner">
+                  <BannerLogoCard bgColor={darkTheme}>
+                    <HiFire style={{color: '#ff0b37', fontSize: '30px'}} />
+                  </BannerLogoCard>
+                  <BannerHeading color={darkTheme}>Saved Videos</BannerHeading>
+                </Banner>
+                <SavedVideosList className="savedVideoslist">
                   {savedVideosList.map(eachVideo => (
                     <SavedAndTrendingVideoCard
                       key={eachVideo.id}
                       videoDetails={eachVideo}
                     />
                   ))}
-                </ul>
+                </SavedVideosList>
               </div>
             ) : (
               <div>
                 <MenuItem />
-                <div>
-                  <img
+                <NoSavedVideosSection bgColor={darkTheme}>
+                  <NoSavedVideosImg
                     src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
                     alt="no saved videos"
                   />
-                  <h2>No saved videos found</h2>
-                  <p>You can save your videos while watching them</p>
-                </div>
+                  <NoSavedVideosHeading color={darkTheme}>
+                    No saved videos found
+                  </NoSavedVideosHeading>
+                  <NoSavedVideosTxt color={darkTheme}>
+                    Save your videos by clicking a button
+                  </NoSavedVideosTxt>
+                </NoSavedVideosSection>
               </div>
             )}
           </SavedVideosSection>

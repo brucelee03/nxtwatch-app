@@ -10,7 +10,7 @@ const AllVideos = () => (
       const {darkTheme} = value
 
       return (
-        <AllVideosSectionContainer bgColor={darkTheme}>
+        <AllVideosSectionContainer bgColor={darkTheme} data-testid="home">
           <PrimeDealsSection />
           <AllVideosSection />
         </AllVideosSectionContainer>

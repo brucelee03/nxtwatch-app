@@ -1,9 +1,18 @@
-import {Link} from 'react-router-dom'
-
 import {formatDistanceToNow} from 'date-fns'
 import {BsDot} from 'react-icons/bs'
 
 import VideosContext from '../../context/VideosContext'
+
+import {
+  VideoLinkItem,
+  VideoItem,
+  VideoCardThumbnailImg,
+  VideoCardContent,
+  VideoCardTitle,
+  VideoCardName,
+  VideoViewsDateTimeCard,
+  VideoViewsDateTime,
+} from '../styledComponents'
 
 const SavedVideoCard = props => (
   <VideosContext.Consumer>
@@ -18,34 +27,30 @@ const SavedVideoCard = props => (
         publishedAt,
         channel,
       } = videoDetails
-      const {name, profileImageUrl} = channel
 
       const date = new Date(publishedAt)
       const newDate = `${date.getFullYear()}, ${date.getMonth()}, ${date.getDate()}`
       const dateAndTimeOfVideo = formatDistanceToNow(new Date(newDate))
 
       return (
-        <li className="video-item">
-          <Link to={`/videos/${id}`} className="link-item">
-            <img
+        <VideoItem>
+          <VideoLinkItem to={`/videos/${id}`}>
+            <VideoCardThumbnailImg
               src={thumbnailUrl}
               alt="video thumbnail"
               className="thumbnail"
             />
-            <div className="video-content">
-              <img src={profileImageUrl} alt={name} />
-              <div>
-                <h2>{title}</h2>
-                <p>{name}</p>
-                <div>
-                  <p>{viewCount} views</p>
-                  <BsDot />
-                  <p>{dateAndTimeOfVideo}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </li>
+            <VideoCardContent>
+              <VideoCardTitle color={darkTheme}>{title}</VideoCardTitle>
+              <VideoCardName>{channel.name}</VideoCardName>
+              <VideoViewsDateTimeCard>
+                <VideoViewsDateTime>{viewCount} views</VideoViewsDateTime>
+                <BsDot style={{color: '#94a3b8', marginTop: '3px'}} />
+                <VideoViewsDateTime>{dateAndTimeOfVideo}</VideoViewsDateTime>
+              </VideoViewsDateTimeCard>
+            </VideoCardContent>
+          </VideoLinkItem>
+        </VideoItem>
       )
     }}
   </VideosContext.Consumer>

@@ -13,7 +13,7 @@ const Home = () => (
       return (
         <div>
           <Header />
-          <HomeSection bgColor={darkTheme} data-testid="home">
+          <HomeSection bgColor={darkTheme}>
             <MenuItem />
             <AllVideos />
           </HomeSection>

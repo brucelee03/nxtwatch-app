@@ -39,6 +39,21 @@ const Header = props => (
         changeTheme()
       }
 
+      const customStyles = {
+        content: {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '151px',
+          width: '35%',
+          padding: '30px',
+          borderRadius: '10px',
+          backgroundColor: darkTheme ? '#212121' : '#ffffff',
+          border: 'none',
+        },
+      }
+
       return (
         <NavbarContainer bgColor={darkTheme}>
           <Link to="/">
@@ -69,12 +84,10 @@ const Header = props => (
             </li>
             <li>
               <NavDesktopItem>
-                <NavbarButton type="button">
-                  <ProfileImg
-                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
-                    alt="profile"
-                  />
-                </NavbarButton>
+                <ProfileImg
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
+                  alt="profile"
+                />
 
                 <Popup
                   modal
@@ -88,6 +101,7 @@ const Header = props => (
                     </LogoutButton>
                   }
                   className="popup-content"
+                  contentStyle={customStyles.content}
                 >
                   {close => (
                     <PopupDesignFiles
@@ -108,6 +122,7 @@ const Header = props => (
                     </button>
                   }
                   className="popup-content"
+                  contentStyle={customStyles.content}
                 >
                   {close => (
                     <>

@@ -1,5 +1,11 @@
 import VideosContext from '../../context/VideosContext'
 
+import {
+  LogoutConfirmation,
+  CancelLogoutBtn,
+  ConfirmLogoutBtn,
+} from '../styledComponents'
+
 const PopupDesignFiles = props => (
   <VideosContext.Consumer>
     {value => {
@@ -12,23 +18,20 @@ const PopupDesignFiles = props => (
 
       return (
         <>
-          <p>Are you sure you want to logout?</p>
+          <LogoutConfirmation color={darkTheme}>
+            Are you sure, you want to logout?
+          </LogoutConfirmation>
           <div>
-            <button
+            <CancelLogoutBtn
               type="button"
-              className="close-button"
               data-testid="closeButton"
               onClick={closePopup}
             >
               Cancel
-            </button>
-            <button
-              type="button"
-              data-testid="confirmButton"
-              onClick={onConfirmLogout}
-            >
+            </CancelLogoutBtn>
+            <ConfirmLogoutBtn type="button" onClick={onConfirmLogout}>
               Confirm
-            </button>
+            </ConfirmLogoutBtn>
           </div>
         </>
       )

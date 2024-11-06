@@ -7,6 +7,23 @@ import {IoSearchSharp} from 'react-icons/io5'
 import VideosContext from '../../context/VideosContext'
 import HomeVideoCard from '../HomeVideoCard'
 
+import {
+  AllVideosContainer,
+  SearchInputFeild,
+  SearchButton,
+  LoaderContainer,
+  VideosList,
+  VideosErrorViewContainer,
+  FailureViewImg,
+  FailureViewHeading,
+  FailureViewDescription,
+  RetryBtn,
+  NoSearchViewResultView,
+  NoSearchViewResultImg,
+  NoSearchViewResultHeading,
+  NoSearchViewResultText,
+} from '../styledComponents'
+
 const apiStatusConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',
@@ -78,96 +95,123 @@ class AllVideosSection extends Component {
   }
 
   onClickRetryButton = () => {
-    this.setState({searchInput: ''}, this.getAllVideos)
+    this.getAllVideos()
   }
+
+  renderSearchInputField = () => (
+    <VideosContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+        const {searchInput} = this.state
+
+        return (
+          <div>
+            <SearchInputFeild
+              type="search"
+              value={searchInput}
+              placeholder="Search"
+              onChange={this.changeSearchInput}
+              onKeyPress={this.onEnterSearchInput}
+              borderColor={darkTheme}
+              color={darkTheme}
+            />
+            <SearchButton
+              type="button"
+              onClick={this.onSearchButtonClick}
+              data-testid="searchButton"
+              borderColor={darkTheme}
+              bgColor={darkTheme}
+            >
+              <IoSearchSharp style={{color: '#606060'}} />
+            </SearchButton>
+          </div>
+        )
+      }}
+    </VideosContext.Consumer>
+  )
 
   renderFailureView = () => (
     <VideosContext.Consumer>
       {value => {
         const {darkTheme} = value
         return (
-          <div className="videos-error-view-container">
-            <img
-              src={
-                darkTheme
-                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
-                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
-              }
-              alt="failure view"
-              className="videos-failure-img"
-            />
-            <h1 className="video-failure-heading-text">
-              Oops! Something Went Wrong
-            </h1>
-            <p className="videos-failure-description">
-              We are having some trouble to complete your request. Please try
-              again.
-            </p>
-            <button type="button" onClick={this.onClickRetryButton}>
-              Retry
-            </button>
-          </div>
+          <>
+            {this.renderSearchInputField()}
+            <VideosErrorViewContainer>
+              <FailureViewImg
+                src={
+                  darkTheme
+                    ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                    : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+                }
+                alt="failure view"
+              />
+              <FailureViewHeading color={darkTheme}>
+                Oops! Something Went Wrong
+              </FailureViewHeading>
+              <FailureViewDescription>
+                We are having some trouble to complete your request.
+              </FailureViewDescription>
+              <RetryBtn type="button" onClick={this.onClickRetryButton}>
+                Retry
+              </RetryBtn>
+            </VideosErrorViewContainer>
+          </>
         )
       }}
     </VideosContext.Consumer>
   )
 
   renderLoadingView = () => (
-    <VideosContext.Consumer>
-      {value => {
-        const {darkTheme} = value
-        return (
-          <div className="products-loader-container" data-testid="loader">
-            <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
-          </div>
-        )
-      }}
-    </VideosContext.Consumer>
+    <>
+      {this.renderSearchInputField()}
+      <LoaderContainer data-testid="loader">
+        <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+      </LoaderContainer>
+    </>
   )
 
   renderVideosListView = () => {
-    const {videosList, searchInput} = this.state
+    const {videosList} = this.state
     const shouldShowVideosList = videosList.length > 0
 
     return shouldShowVideosList ? (
-      <div className="all-videos-container">
-        <div>
-          <input
-            type="search"
-            value={searchInput}
-            placeholder="Search"
-            onChange={this.changeSearchInput}
-            onKeyPress={this.onEnterSearchInput}
-          />
-          <button
-            type="button"
-            onClick={this.onSearchButtonClick}
-            data-testid="searchButton"
-          >
-            <IoSearchSharp />
-          </button>
-        </div>
-        <ul className="videos-list">
+      <>
+        {this.renderSearchInputField()}
+        <VideosList>
           {videosList.map(eachVideo => (
             <HomeVideoCard videoData={eachVideo} key={eachVideo.id} />
           ))}
-        </ul>
-      </div>
+        </VideosList>
+      </>
     ) : (
-      <div className="no-videos-view">
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          className="no-videos-img"
-          alt="no videos"
-        />
-        <h1 className="no-products-heading">No Search results found</h1>
-        <p className="no-products-description">
-          Try different key words or remove search filter
-        </p>
-        <button type="button" onClick={this.onClickRetryButton}>
-          Retry
-        </button>
-      </div>
+      <VideosContext.Consumer>
+        {value => {
+          const {darkTheme} = value
+
+          return (
+            <>
+              {this.renderSearchInputField()}
+              <NoSearchViewResultView>
+                <NoSearchViewResultImg
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+                  className="no-videos-img"
+                  alt="no videos"
+                />
+                <NoSearchViewResultHeading color={darkTheme}>
+                  No Search results found
+                </NoSearchViewResultHeading>
+                <NoSearchViewResultText>
+                  Try different key words or remove search filter
+                </NoSearchViewResultText>
+                <RetryBtn type="button" onClick={this.onClickRetryButton}>
+                  Retry
+                </RetryBtn>
+              </NoSearchViewResultView>
+            </>
+          )
+        }}
+      </VideosContext.Consumer>
     )
   }
 
@@ -187,7 +231,7 @@ class AllVideosSection extends Component {
   }
 
   render() {
-    return <div className="all-videos-section">{this.renderAllVideos()}</div>
+    return <AllVideosContainer>{this.renderAllVideos()}</AllVideosContainer>
   }
 }
 

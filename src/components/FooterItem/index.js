@@ -1,22 +1,41 @@
+import VideosContext from '../../context/VideosContext'
+
+import {
+  ContactUsContainer,
+  ContactUsHeading,
+  ContactUsImgCard,
+  ContactUsImg,
+  ContactUsTagline,
+} from '../styledComponents'
+
 const FooterItem = () => (
-  <div className="contant-us-card">
-    <h1 className="contact-us-heading">CONTACT US</h1>
-    <div>
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-        alt="facebook logo"
-      />
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-        alt="twitter logo"
-      />
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-        alt="linked in logo"
-      />
-    </div>
-    <p>Enjoy! Now to see your channels and recommendations!</p>
-  </div>
+  <VideosContext.Consumer>
+    {value => {
+      const {darkTheme} = value
+      return (
+        <ContactUsContainer>
+          <ContactUsHeading color={darkTheme}>CONTACT US</ContactUsHeading>
+          <ContactUsImgCard>
+            <ContactUsImg
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+            />
+            <ContactUsImg
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+            />
+            <ContactUsImg
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+            />
+          </ContactUsImgCard>
+          <ContactUsTagline color={darkTheme}>
+            Enjoy! Now to see your channels and recommendations!
+          </ContactUsTagline>
+        </ContactUsContainer>
+      )
+    }}
+  </VideosContext.Consumer>
 )
 
 export default FooterItem
