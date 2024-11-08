@@ -19,6 +19,8 @@ export const LoginFormContainer = styled.div`
   max-width: 1110px;
   margin: auto;
   font-family: 'Roboto';
+  justify-content: center;
+  align-items: center;
 `
 
 export const FormContainer = styled.form`
@@ -65,7 +67,7 @@ export const InputField = styled.input`
 `
 
 export const ShowPasswordInput = styled(InputField)`
-  align-self: center;
+  align-self: flex-start;
   margin-top: 3px;
 `
 
@@ -77,6 +79,7 @@ export const ShowPasswordLabel = styled(InputLabel)`
 export const ShowPasswordContainer = styled.div`
   ${flexCenter}
   gap: 5px;
+  justify-content: flex-start;
 `
 
 export const LoginButton = styled.button`

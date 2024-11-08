@@ -29,8 +29,7 @@ const SavedVideoCard = props => (
       } = videoDetails
 
       const date = new Date(publishedAt)
-      const newDate = `${date.getFullYear()}, ${date.getMonth()}, ${date.getDate()}`
-      const dateAndTimeOfVideo = formatDistanceToNow(new Date(newDate))
+      const dateAndTimeOfVideo = formatDistanceToNow(date, {addSuffix: true})
 
       return (
         <VideoItem>
